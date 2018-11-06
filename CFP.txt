@@ -1,0 +1,6 @@
+The Old Man Glitch - Escalade de bug sur la premiere generation de Pokemon sur Gameboy.
+
+Je vous propose de prendre avec vous le temps de regarder un bug dans du code 8-bit de 1996 et de parler de techniques obsoletes d'escalade de failles. Juste pour le plaisir.
+Off-by-one error, underflow, buffer overflow, injection de code... avec des Pokemon aalors même les adultes vont comprendre.
+
+Essaie de faire des logiciels depuis vingt ou trente ans. Au début en se concentrant surtout sur le code, aujourd'hui en essayant de débusquer les problèmes là où ils se trouvent. Heureusement, des fois c'est dans le code.

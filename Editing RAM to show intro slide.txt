@@ -1,0 +1,20 @@
+
+1-Start a game
+2-Open the menu
+3-Edit RAM, during VBlank the tiles will be copied to VRAM
+
+-----+----------------+--------
+Addr | Data (hex)     | Tiles
+-----+----------------+--------
+c3d4 | 93a7a47f7f7f7f | The
+c3e8 | 8eaba37f7f7f7f | Old
+c3fc | 8ca0ad7f7f7f7f | Man
+c410 | 86aba8b3a2a77F | Glitch
+c424 | 7f7f7f7f7f7f7f |
+c438 | 85a0a1a8a4ad7f | Fabien
+c44c | 93918486808d7f | TREGAN
+c460 | 7f7f7f7f7f7f7f |
+c474 | 93b6a8b3b3b19c | Twittr:
+c488 | a5b3b1a4a6a0ad | ftregan
+c49c | 7f7f7f7f7f7f7f |
+-----+----------------+--------
