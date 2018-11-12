@@ -92,3 +92,53 @@ c49c | 7f7f7f7f7f7f7f |
 Your screen should now look like this (except the `Breakpoints` windows which should be closed) :
 
 ![alt text](Initial%20Screen%20Setup.PNG "Initial screen setup.")
+
+## Introduction
+
+> First lets start with a few question :
+> * Who here does love Assembly Language ?
+> * Who here writes Assembly ?
+> * Who here likes bugs ?
+> * Who here loves bugs ?
+
+## 00 - Title
+
+### Showing the bug
+
+> My name is Fabien. Today we are going to speak about a bug. This bugs is known as The Old Glitch, it resides in first generation of Pokémon on Gameboy.
+
+Quit the menu 
+
+> Pokémon is an RPG game which came out in 1994, 1996 in Europe. You can move around in the world.
+
+move around while saying this, stop next to the East shore facing east and re-open the menu.
+
+> Here my character is named GGGGGGG (we'll see later why), he carries 5 items then an `X Special` and a `Dome Fossil` (we'll see why also).
+
+Show while saying
+
+> Here I am safe because I am in a town, but outside of towns if I walk in Grass, in Caves or if I surf in Water I can be attacked by Wild Pokémons. I can fight them and try to capture them. Once I've captured them I can use them to fight other Wild Pokémons or again NPC's Pokémon to progress in the game. The Pokémons can level up, and when they have leveled up enough they can learn new attacks. Once I've made enough progress in the game, I can use some of these attack to do other things than fighting. Here as an example I can use my GYARADOS' SURF attack to go in water.
+
+do it,move at least one tile east so you are no longer on the shore.
+
+> Once I'm in water I can be attacked by Wild Pokémons.
+
+Move south-north until you are attacker, hopefully by a level 30 TENTACOOL
+
+> Here I'm rather late in the game so I should be attacked by level 20-30 Pokémons.
+
+Escape the fight, go on the shore and move north-south
+
+> The bug I want to show you occurs here.
+
+Wait for an attack, which hopefully will be a Level 3 RATTATA, press a key to open combat menu
+
+> Did someone see the bug ? I am in water, but I've been attacked by a RATTATA which abviously is a ground Pokémon and should not be found in Water. Moreover, it is Level 3 and this place is rather late in the game ; I should encounter level 20-30 Pokémons, not level 3.
+>
+> Astonishing, isn't it ? This quiet unimpressiv bug is the starting point of a glitch which is the most famous of the Pokémon game, probably of the GameBoy, and maybe one of the top 10 most famous bugs in videogame history.
+
+### The off-by-one error
+
+### Reuse after free
+
+### What to do when you find a reuse after free
