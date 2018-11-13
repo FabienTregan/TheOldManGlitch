@@ -242,17 +242,17 @@ show it.
 
 Fly back to CINNABAR ISLAND
 
-> The probability is reset to `00` but following garbage remains. Earlier the garbage was made of the list of Pokémons for the last Zone I visited. But now it's made of my name,  which is something I can somehow control. There are heighty-height characters I can choose out of 256 possible values. So if you could choose the pokemon you would encounter, which one will you choose ?
+> The probability is reset to `00` but following garbage remains. Earlier the garbage was made of the list of Pokémons for the last Zone I visited. But now it's made of my name, which is something I can somehow control. There are seventy characters I can choose out of 256 possible values. So if you could choose the Pokémon you would encounter, which one will you choose ?
 
 The audience will probably answer with a legendary Pokémon, maybe Mew or Mewtwo
 
-> Mew is not possible, it's code is not in the 70 possible characters for the name. Mewtwo is Possible though, its code is `83` so if my name is set to `DDDDDDD` I can fight it. I can only choose level between 127 and 191, he will heal fulllife constantly, but I can fight it. But it's not what one I choose. There is something more interesting pokemon to fight than a legendary one, lets see what we choosed.
+> Mew is not possible, its code is not in the 70 possible characters for the name. Mewtwo is Possible though, its code is `83` so if my name is set to `DDDDDDD` I can fight it. I can only choose level between 127 and 191, he will heal to full life constantly, but I can fight it. But it's not the one I chose. There is are more interesting Pokémon to fight than a legendary one when you try to escalad a bug.
 
-Use surf to go on the shore and encounter a `'M` or a `MissingNo.`. If you encouter something else, explain the audiance that you have just been unlucky and got one of the last pokemon of the table, and try again. If you encounter a MissingNo., tell them that's this is Pokémon number `86` with level `86` (which is hexadecimal code for 134). If it is M', tell them it is Pokémon number `00` with level either `50` or `00`
+Use surf to go on the shore and encounter a `'M` or a `MissingNo.`. If you encouter something else, explain the audiance that you have just been unlucky and got one of the last Pokémons of the table and try again. If you encounter a MissingNo., tell them that's this is Pokémon number `86` with level `86` (which is hexadecimal code for 134). If it is M', tell them it is Pokémon number `00` with level either `50` or `00`
 
 ![Fighting a glitched Pokémon](fighting%20`M.PNG)
 
-> So here is our Pokémon. What happens? The value is not a correct one, so when the code uses it to calculate the address of the name of the Pokémon or the address of the data for the picture, it reaches some weird data.
+> So here is our Pokémon. What happened? The value is not a correct one, so when the code uses it to calculate the address of the name of the Pokémon or the address of the data for the picture, it reaches some weird data.
 >
 > This starts to be fun: We hade an off-by-one, causing a Reuse After Free, and now we know how to inject weird data to fight a glitched pokemon. But there is more to come ;)
 
@@ -260,7 +260,9 @@ Try to run away, or let your Pokémon die,  and go in town.
 
 ## 03 129 X SPECIALs
 
-> In Pokémon we have the Pokédex, which is a list of all the Pokémons types I have encountered or captured.
+> Once we have reached some random data like we did, we can hope to corrupt more things. As an example here, it might have been the case that, when trying to decompress the picture of the glitched Pokémon, the code writes interesting values at interesting places. Unfortunately this is not the case.
+>
+> In Pokémon we have the Pokédex, which is a list of all the Pokémons types we encountered or captured.
  
   Show it
 
@@ -268,13 +270,13 @@ Try to run away, or let your Pokémon die,  and go in town.
 
   Scroll down the whole list
 
-> We can't find it. This it because in memory, it is not a variable length list where things can be added, it is a fixed sized memory area. We calculate the address of the byte coresponding to a given Pokémon Type number, and toggle a bit to indicate that we encountered it. And when we do this calculation with an invalid number (`00` or `86`) we reach some random place in memory which is outside of the Pokédex area.
+> We can't find it. This it because in memory, it is not a variable length list where things can be added, it is a fixed size memory area. We calculate the address of the byte coresponding to a given Pokémon Type number, and toggle a bit to indicate that we encountered it. And when we do this calculation with an invalid number (`00` or `86`) we reach some random place in memory which is outside of the Pokédex area.
 >
 > In fact it is not random, it is fixed. And where is it? It is just after the Pokédex area in memory, it is...
 
 go back up in menu, show item list
 
-> It is in the list of item we carry. More precisely, in the quantity of the sixth item. So how many do we have now ?
+> It is in the list of Items we carry. More precisely, in the quantity of the sixth item. So how many do we have now?
 
 Scroll down:
 
@@ -282,7 +284,7 @@ Scroll down:
 
 > This character here is the third tile after the `9` tile, so it is a (9 + 3 =) 12, and this is a 9. 12 * 10 + 9 = 129. We hade one X SPECIAL (`b00000001` in binary). The heighth bit has been toggled, we now have `b10000001`, which is 129.
 >
-> So we hade an off-by-one error, leading to a Reuse After Free. We could craft our name to inject invalid values in the reused value, and nowwe have a buffer overflow, allowing us to multiply our sixth item ! At least something usefull :) But there is more.
+> So we hade an off-by-one error, leading to a Reuse After Free. We could craft our name to inject invalid values in the reused value, and now we have a buffer overflow, allowing us to multiply our sixth Item ! At least something usefull :) But there is more.
 >
 > You see that the game does not know how to display 129 quantity. This is because in Pokémon you are limited to stacking 99 items. Lets play with that.
 
