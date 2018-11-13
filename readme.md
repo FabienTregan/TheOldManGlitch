@@ -148,31 +148,31 @@ Wait for an attack, which hopefully will be a Level 3 RATTATA, press a key to op
 
 ### The off-by-one error
 
-> Now to understand why this bug is so famous, let's have a look at what happens inside the code. There are to arrays that help determinate which Wild Pokémon you will encounter : One is here at address `D887`, starting with this `00`, the other one is a little further, starting with this `05`.
+> To understand why this bug is so famous, lets have a look at what happens inside the code. There are two arrays that help determinating which Wild Pokémon you will encounter: One is here at address `D887`, starting with this `00`, the other one is a little further, starting with this `05` at `D8A4`.
 
-Note : you can use EpicPen to highlight the tables.
+Note: you can use EpicPen to highlight the tables.
 
-> The first one is default case, the second one is for Water Pokémons. The first number is the probability of encountering a Wild Pokémon (`00` meaning no encounter because we are safe when in town, and `05` meaning 5 chances out of `256` when on Water). Then we have a list of Pokémons that can be encountered going like this : Level of the most probable encounter, followed by type of the Pokémon of the most probable encounter, Level of a bit less probable encounter, and its type, again and again until the ninth one (with 1.2% encounter probability).
+> The first one is default case, the second one is for Water Pokémons. The first number is the probability of encountering a Wild Pokémon (`00` meaning no encounter because we are safe when in town, and `05` meaning 5 chances out of 256 when on Water). Then we have a list of Pokémons that can be encountered going like this: Level of the most probable encounter, followed by type of the Pokémon of the most probable encounter, Level of a bit less probable encounter, and its type, again and again until the ninth one (with 1.2% encounter probability).
 >
 > Looking at the code, we see at address `789E` that we load the address `C45D` into `ld` register,
 
 Note : It should be highlited in pale pink.
 
-> then load into register `c` what is at this address, load `wGrassTile` into `a` and compare `a` and `c`. `C45D` is the address of this tile on the bottom right quarter of my character, so here it is Water. If it is Water we'll read the probability of encountering a Wild Pokémon in the second table - the Water one - else we use the first one.
+> then load what is at this address into register `c`, load `wGrassTile` into `a` and compare `a` and `c`. `C45D` is the address of this tile on the bottom right quarter of my character, so here it is Water. Since it is Water we'll read the probability of encountering a Wild Pokémon in the second table - the Water one - else we would have used the first one.
 >
-> We can then generate a random number, compare it with the given probability to determine if we encountered a Wile Pokémon. If we encounter one, we need to determine which one and for this, line `78DB`, we read again the type of tile we stand on at address `C45C`.
+> We can then generate a random number, compare it with the given probability to determine if we encountered a Wild Pokémon. If we encounter one, we need to determine which one and for this, line `78DB`, we read again the type of tile we stand on at address `C45C`.
 
 Note : you need to scroll down a few lines. It should be highlited in pale pink.
 
-> And maybe you saw the problem? We read `C45D` - bottom right quarter of my position - to say 'Were are on Water, we have 5 chances out of 256 to encounter a Wild Pokémon', and now we look at `C45C`, which is bottom *left* corner, to determine which is encountered pokemon. We have what we call an off-by-one error.
+> And maybe you saw the problem? We read `C45*D*` - bottom right quarter of my position - to say 'We are are on Water, we have 5 chances out of 256 to encounter a Wild Pokémon', and now we look at `C45*C*`, which is bottom *left* corner, to determine which is the encountered Pokémon. I know this error, I made it already, it called an off-by-one error.
 >
-> Since bottom *left* corner of my character does not stand on water, we will use the default table of pokemon to determine the type and level of the encounter, when we used the water table to get the probability of encounter. Hence we encounter a non-Water Pokémon while surfing on a Water Tile.
+> Since bottom *left* corner of my character does not stand on water, we will use the default table of pokemon to determine the type and level of the encounter, when we used the water table to get the probability of encounter. Hence we encounter a non-Water Pokémon while surfing on a Water Tile in a Zone that has a `00` probability of encountering non-Water Pokémon.
 
 ### Reuse After Free
 
 > Something interesting since we have an off-by-one error, is to study how the data from the table that should not be read are generated.
 
-go left past the `GYM` house, then up to this position :
+go left past the `GYM` house, then up to this position:
 
 ![Position yourself just above the pond on north of the town](Position%20to%20show%20Reuse%20After%20Free.PNG "Position to go before continuing")
 
@@ -180,17 +180,17 @@ Be carefull not to walk on the pond yet, stay in town.
 
 Both tables of encounters should be highlighted on screen. If not, do it now.
 
-> Here we are in a Town, which is a safe zone with zero probability of encountering a Wild Pokemon except in Water. If we walk forward one step North, we will change of Zone and some code will be executed that generate the new table of possible encounter. See what will change.
+> Here we are in a Town, which is a safe zone with zero probability of encountering a Wild Pokemon except in Water. If we walk forward one step North, we will change of Zone and some code will be executed that generates the new table of possible encounters. Ok, watch the value changing...
 
 Move one step north
 
-> Everything changed: The probability in `D887` went from `00` to `19`, and the whole list of possible Pokémon Types and their level changed. Now if I go back in town, see what happens
+> Everything changed: The probability in `D887` went from `00` to `19`, and the whole list of possible Pokémon Types and their levels changed. Now if I go back in town, see what happens
 
 Move one step south.
 
-> We executed the code that fills the table for the towns. The towns are safe, there are no possible encounter, so it sets both encounter probabilities to `00`. Then since there is no probability of encounter, there is no need to fill the remaining of the encounter table. So anything that was here stays here, it is just garbage.
+> We executed the code that fills the table for the towns. The towns are safe places, there are no possible encounter, so it sets both encounter probabilities to `00`. Then since there is no probability of encounter, there is no need to fill the remaining of the encounter table. So anything that was here stays here, it is just garbage.
 >
-> The Zone on the east contains only water, so for the same reason when enter it, the probability of encountering a non-Water Pokémon is set to `00` and the garbage stay there. But because we have this off by one error, we are going to use the garbage anyway. This is called a Reuse After Free.
+> The Zone on the east contains only water, so for the same reason when enter it, the probability of encountering a non-Water Pokémon is set to `00` and the garbage stay there. But because we have this off by one error, we are actually going to use whatever stays there. This is called a Reuse After Free.
 >
 > So we hade an off-by-one error, which makes us read the wrong table, and since this table is not reinitialised we now have a Reuse After Free.
 
@@ -198,7 +198,7 @@ Move one step south.
 
 ### What to do when you find a Reuse After Free
 
-> So we now have found a RAF. When we have this kind of bad pattern, it would be fun to find something in the game that any writes any values here, which will later be used as if they were legit Pokémon descriptions.
+> So we now have found a RAF. When we have this kind of bad pattern, we want to find something in the game that writes any value here which will later be used as if they were legit Pokémon descriptions. Possibly some values we can control.
 >
 > There is one place in the code that write to `D887`: it is when you link two GameBoys to play Player versus Player. It writes the name of the other player here. But that's not interesting to us because once you entered the PvP mode, you can not go back to normal game. You need to reset the GameBoy, which resets all memory.
 >
@@ -214,25 +214,27 @@ Use the Fly move on Dux to fly to VIRIDIAN CITY.
 
 > The is an NPC here, called "Old Man" - hence the name of the glitch : The Old Man Glitch - who will show you how to capture Wild Pokémons.
 
-Go a few tiles left, then about to screen north until you meet the Old Man.
+Go a few tiles left, then about two screens up until you meet the Old Man.
 
 ![Screen capture of where to find Old Man](The%20Old%20Man.PNG "You in front of the Old Man")
 
 Speak to him, answer `No` to his question.
 
-> If you tell him you are not in a hurry, he will show you how to capture them. The game then start a normal battle, with three main differences
+> If you tell him you are not in a hurry, he will show you how to capture them. The game then starts a normal battle, with three main differences:
 
 Press button until the Old Man and Wild Pokemon appear on screen
 
-> First the picture here is not mine it is the one of the Old Man. Second, the fight is scripted, I can not play. Third, look at this:
+> * First the picture here is not mine it is the one of the Old Man.
+> * Second, the fight is scripted, I can not play.
+> * Third, look at this:
 
 Start the fight, and pause (press `esc`) just after the Old Man has choosed the pokemon, while he is throwing it.
 
 ![Old Man using Pokéball](Old%20Man%20using%20POKé%20Ball.PNG "Pause here.")
 
-> Instead of writing `GGGGGGG used POKé BALL!` it says `OLD MAN used Poké BALL!`. To do this and still use the existing code for fights, it copies the name `Old Man` to where my character name was. But of course later it will need my real name, so it saves it. And where does it save it? In the buffer where it write the name of the opponent in PvP mode. So if you now look at the `D887` address, you will see `86 86 86 86 86 86 86`,  which is my name (`GGGGGGG`), followed by a `50`, which is the String terminator in Pokémon - String are not terminated with a `00` but with a `50` in Pokémon.
+> Instead of writing `GGGGGGG used POKé BALL!` it says `OLD MAN used POKé BALL!`. To do this without changing the code, it copies the name `Old Man` to where my character name was. But of course later it will need this name again, so it saves it. And where does it save it? In the buffer where it writes the name of the opponent in PvP mode. So if you now look at the `D887` address, you will see `86 86 86 86 86 86 86`,  which is my name (`GGGGGGG`), followed by a `50`, which is the String terminator in Pokémon - Strings are not terminated with a `00` but with a `50` in Pokémon.
 >
-> Now I can leave the fight, I will be back in Town so the probability of encountering a non-Water Pokémon will be set to `00` but the `86 86 86 86 86 86 50 00 00` remains.
+> Now I can leave the fight, I will be back in Town so the probability of encountering a non-Water Pokémon will be set to `00` but the `86 86 86 86 86 86 50 00 00` remain.
 
 show it.
 
