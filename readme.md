@@ -1,35 +1,35 @@
 # The Old Man Glitch - Presentation of a classic Pokémon First Generation bug.
 
   This document should contain everything you need to replay or give the the presentation I gave at Jug User Group Toulouse and DevFest 2018 Toulouse.
-  If it does not, feel free to contact me via twitter : @ftregan
+  If it does not, feel free to contact me via twitter: @ftregan.
 
-  You will need about 45 minutes to give this presentation, provided you don't do any error which may require a bit of preparation. There are fourteen intermediate game state save files in case something during goes wrong during the presentation. They have the same name as the corresponding chapters in this documentation. 
+  You will need about 45 minutes to give this presentation, provided you don't do any error which may require a bit of preparation. There are fourteen intermediate game state save files in case something goes wrong during the presentation. They have the same name as the corresponding chapters in this documentation. 
 
 ## Setting up everything
 
-  This chapter guide you thgough setting everything to reproduce the demonstration.
+  This chapter guide you through setting everything to reproduce the demonstration.
   If you just want the writeup, skip to next chapter.
 
 ### Resolution
 
   My screen setup is FullHD (1920 x 1080) with auto-hidden taskbar.
   This is usefull for the presentation (compatible with most videoprojectors and choosen font size)
-  Having a black empty desktop bacground is nice (at least the bottom of the right half should be clean)
+  Having a black empty desktop background is nice (at least the bottom of the right half should be clean)
 
 ### BGB - GameBoy Emulator
 
   I used BGB emulator, which can be downloaded at http://bgb.bircd.org/. It's ment for Windows but runs under Wime.
 
-  In the presentation directory, you will find a `bgb.ini`, which have the following changes when compared to default one :
+  In the presentation directory, you will find a `bgb.ini` that you should copy over the default one. It will change some settings:
 * Font size is increased in order to allow audiance to read
 * Color for breakpoints, highlight, and current line are change to look better and for important accessibility reasons
-* Key are set for AZERTY keyboard, using A and Z for buttons, 1 and 2 for start and select
+* Keys are set for AZERTY keyboard, using A and Z for buttons, 1 and 2 for start and select
 * The framerate is set to 120fps, about twice the normal speed
 
 ### EpicPen
 
   [EpicPen](https://epic-pen.com/) is a tool to highlight things on screen with different colors. It is usefull only if you plan to give the talk.
-  Run it, roll it, and move it to some place on the right side.
+  Run it, roll it, and move it to some place on the right side. Be sure to use the highlighter and not the pen.
 
 ### The ROM
 
@@ -37,17 +37,17 @@
 
 ### Disassembled and commented source code
 
-  Though not used udring the presentation, you may want to download the code from https://github.com/pret/pokered
+  Though not used during the presentation, you may want to download the code from https://github.com/pret/pokered
 
 ### Documentation
 
 * The `gb-programming-manual.pdf` document is an unofficial GB Developper doc.  Chapter 4 - `CPU Instruction Set` - lists all instructions and opcodes.
-* The [Big HEX list](https://glitchcity.info/wiki/The_Big_HEX_List) gives correspondance between Hex value, Pokémon type, Items, Characters and more
-* [Glitch City Laboratories Forums' thread about 8F item](https://forums.glitchcity.info/index.php?topic=6638.0)
+* The [Big HEX list](https://glitchcity.info/wiki/The_Big_HEX_List) gives correspondance between Hex value, Pokémon type, Items, Characters and more.
+* [Glitch City Laboratories Forums' thread about 8F item](https://forums.glitchcity.info/index.php?topic=6638.0) was my source for reproducing the escalation.
 
-### Sylink file
+### Symlink file
 
-  There is a `Pokemon Red.sym` file in this repository, it must be in the same directory as the ROM file which must be named `Pokemon Red.gb`. This enables the debugger to display human readable labels. (Either copy the `.sym` file to where the ROM file is or copy the ROM in this directory.)
+  There is a `Pokemon Red.sym` file in this repository, it must be in the same directory as the ROM file which must be named `Pokemon Red.gb`. This allows the debugger to display human readable labels. (Either copy the `.sym` file to where the ROM file is or copy the ROM in this directory.)
 
 ### Run BGB and Pokémon Red
 
@@ -57,10 +57,10 @@
 ### Initial configuration of the screen
 
 * Stretch the screen window of GBG so it takes the full height of the screen and have a 1:1 aspect ratio
-* Move this windows to the right side of the screen
+* Move this window to the right side of the screen
 * Open the debugger (`esc` key)
 * Move it to the left side
-* Stretch it so it takes full height and the memory view (bottom of the windows) show the hex value but not the text values
+* Stretch it so it takes full height and the memory view (bottom of the windows) show the hex values but not the text values
 
 ### Initial state of the emulator
 
@@ -68,15 +68,16 @@
   * `1:D163`
   * `4:789E`
   * `4:78DB`
-* Disable the last two breakpoints (they are just used to highlight the lines)
-* In the memory (hex) view, go to `WRA1:D887` (use `ctrl-g`) and scroll so it is on fisrt line
-* In the code view, go to `4:7888` and scroll so it is on firt line
+* Disable the last two breakpoints (they are just used to highlight the lines) (use the `Debug -> Breakpoints` menu)
+* In the memory (hex) view, go to `WRA1:D887` (use `ctrl-g`) and scroll so it is on first line
+* In the code view, go to `4:7888` and scroll so it is on first line
 * Run the game (`F9` key)
 
 ### Optional : Modify the menu to display speaker's name
 
-  You can not directly modify the VRAM (video memory) to change the displayed menu because it is recopyed from a buffer in memory at each VBLANK (that is about 60 times per second). You should edit the buffer instead. The buffer will be re-built when you exit the menu, so no trave of the modification will stay in memory and you can start playing directly.
-  Here are the addresses at which you whant to modify the buffer:
+  You can not directly modify the VRAM (video memory) to change the displayed menu because it is recopyed from a buffer in memory at each VBLANK (that is about 60 times per second, 120 with provided setting of the emulator). You should edit the buffer instead. The buffer will be re-built when you exit the menu, so no trace of the modification will stay in memory and you can start playing directly.
+
+  Here are the addresses at which you want to modify the buffer:
 
 Addr | Data (hex)     | Tiles   
 -----|----------------|---------
