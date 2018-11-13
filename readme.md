@@ -3,6 +3,8 @@
   This document should contain everything you need to replay or give the the presentation I gave at Jug User Group Toulouse and DevFest 2018 Toulouse.
   If it does not, feel free to contact me via twitter : @ftregan
 
+  You will need about 45 minutes to give this presentation, provided you don't do any error which may require a bit of preparation. There are fourteen intermediate game state save files in case something during goes wrong during the presentation. They have the same name as the corresponding chapters in this documentation. 
+
 ## Setting up everything
 
   This chapter guide you thgough setting everything to reproduce the demonstration.
@@ -95,7 +97,7 @@ c49c | 7f7f7f7f7f7f7f |
 
 Your screen should now look like this (except the `Breakpoints` windows which should be closed) :
 
-![alt image](Initial%20Screen%20Setup.PNG "Initial screen setup.")
+![Initial screen setup.](Initial%20Screen%20Setup.PNG "Initial screen setup.")
 
 ## Introduction
 
@@ -169,7 +171,7 @@ Note : you need to scroll down a few lines. It should be highlited in pale pink.
 
 go left past the `GYM` house, then up to this position :
 
-![alt Position yourself just above the pond on north of the town](Position%20to%20show%20Reuse%20After%20Free.PNG "Position to go before continuing")
+![Position yourself just above the pond on north of the town](Position%20to%20show%20Reuse%20After%20Free.PNG "Position to go before continuing")
 
 Be carefull not to walk on the pond yet, stay in town.
 
@@ -189,4 +191,52 @@ Move one step south.
 >
 > So we hade an off-by-one error, which makes us read the wrong table, and since this table is not reinitialised we now have a Reuse After Free.
 
+## 01 - The Old Man fighting
+
 ### What to do when you find a reuse after free
+
+> So we now have found a Reuse After Free. When we have this kind of bad pattern, it would be fun to find something in the game that any writes any values here, which will later be used as if they were legit Pokémon descriptions.
+>
+> There is one place in the code that write to `D887`: it is when you link two GameBoys to play Player versus Player. It writes the name of the other player here. But that's not interesting to us because once you entered the PvP mode, you can not go back to normal game. You need to reset the GameBoy, which resets all memory.
+>
+> But there is another piece of code which uses the buffer that stores the PvP opponent's name.
+
+### Encounter Old Man
+
+> This happens early in the game, in the second town you enter. Lets fly here.
+
+Use the Fly move on Dux to fly to VIRIDIAN CITY.
+
+![Viridian City is second town north of the town where you currently are](Viridian%20City.PNG "Dux going to fly to Viridian City")
+
+> The is an NPC here, called "Old Man" - hence the name of the glitch : The Old Man Glitch - who will show you how to capture Wild Pokémons.
+
+Go a few tiles left, then about to screen north until you meet the Old Man.
+
+![Screen capture of where to find Old Man](The%20Old%20Man.PNG "You in front of the Old Man")
+
+Speak to him, answer `No` to his question.
+
+> If you tell him you are not in a hurry, he will show you how to capture them. The game then start a normal battle, with three main differences
+
+Press button until the Old Man and Wild Pokemon appear on screen
+
+> First the picture here is not mine it is the one of the Old Man. Second, the fight is scripted, I can not play. Third, look at this:
+
+Start the fight, and pause (press `esc`) just after the Old Man has choosed the pokemon, while he is throwing it.
+
+![Old Man using Pokéball](Old%20Man%20using%20POKé%20Ball.PNG "Pause here.")
+
+> Instead of writing `GGGGGGG used POKé BALL!` it says `OLD MAN used Poké BALL!`. To do this and still use the existing code for fights, it copies the name `Old Man` to where my character name was. But of course later it will need my real name, so it saves it. And where does it save it? In the buffer where it write the name of the opponent in PvP mode. So if you now look at the `D887` address, you will see `86 86 86 86 86 86 86`,  which is my name (`GGGGGGG`), followed by a `50`, which is the String terminator in Pokémon - String are not terminated with a `00` but with a `50` in Pokémon.
+>
+> Now I can leave the fight, I will be back in Town so the probability of encountering a non-Water Pokémon will be set to `00` but the `86 86 86 86 86 86 50 00 00` remains.
+
+show it.
+
+## 02 Fighting MissingNo
+
+> I can now leave town, hence enter a new zone and the `86`s will be overwritten by correct data. But if I Fly to another town...
+
+Fly back to CINNABAR ISLAND
+
+> The probability is reset to `00` but the 
