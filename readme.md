@@ -24,6 +24,7 @@
 * Font size is increased in order to allow audiance to read
 * Color for breakpoints, highlight, and current line are change to look better and for important accessibility reasons
 * Key are set for AZERTY keyboard, using A and Z for buttons, 1 and 2 for start and select
+* The framerate is set to 120fps, about twice the normal speed
 
 ### EpicPen
 
