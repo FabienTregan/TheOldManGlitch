@@ -121,7 +121,7 @@ Quit the menu
 
 move around while saying this, stop next to the East shore facing east and re-open the menu.
 
-> Here my character is named GGGGGGG (we'll see later why), he carries 5 items then an `X Special` and a `Dome Fossil` (we'll see why also).
+> Here my character is named GGGGGGG (we'll see later why), he carries 5 items then an `X SPECIAL` and a `DOME FOSSIL` (we'll see why also).
 
 Show while saying
 
@@ -257,7 +257,7 @@ Use surf to go on the shore and encounter a `'M` or a `MissingNo.`. If you encou
 
 Try to run away, or let your Pokémon die,  and go in town.
 
-## 03 129 XSpecials
+## 03 129 X SPECIALs
 
 > In Pokémon we have the Pokédex, which is a list of all the Pokémons types I have encountered or captured.
  
@@ -277,9 +277,9 @@ go back up in menu, show item list
 
 Scroll down:
 
-![Item list with a glitched number of XSpecials](129%20XSpecials.PNG "Weird !")
+![Item list with a glitched number of X SPECIALs](129%20XSpecials.PNG "Weird !")
 
-> This character here is the third tile after the `9` tile, so it is a (9 + 3 =) 12, and this is a 9. 12 * 10 + 9 = 129. We hade one XSpecial (`b00000001` in binary). The heighth bit has been toggled, we now have `b10000001`, which is 129.
+> This character here is the third tile after the `9` tile, so it is a (9 + 3 =) 12, and this is a 9. 12 * 10 + 9 = 129. We hade one X SPECIAL (`b00000001` in binary). The heighth bit has been toggled, we now have `b10000001`, which is 129.
 >
 > So we hade an off-by-one error, leading to a Reuse After Free. We could craft our name to inject invalid values in the reused value, and nowwe have a buffer overflow, allowing us to multiply our sixth item ! At least something usefull :) But there is more.
 >
