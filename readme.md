@@ -40,7 +40,9 @@
 
 ### Documentation
 
-  The `gb-programming-manual.pdf` document is an unofficial GB Developper doc.  Chapter 4 - `CPU Instruction Set` - lists all instructions and opcodes.
+* The `gb-programming-manual.pdf` document is an unofficial GB Developper doc.  Chapter 4 - `CPU Instruction Set` - lists all instructions and opcodes.
+* The [Big HEX list](https://glitchcity.info/wiki/The_Big_HEX_List) gives correspondance between Hex value, Pokémon type, Items, Characters and more
+* [Glitch City Laboratories Forums' thread about 8F item](https://forums.glitchcity.info/index.php?topic=6638.0)
 
 ### Sylink file
 
@@ -165,7 +167,7 @@ Note : you need to scroll down a few lines. It should be highlited in pale pink.
 >
 > Since bottom *left* corner of my character does not stand on water, we will use the default table of pokemon to determine the type and level of the encounter, when we used the water table to get the probability of encounter. Hence we encounter a non-Water Pokémon while surfing on a Water Tile.
 
-### Reuse after free
+### Reuse After Free
 
 > Something interesting since we have an off-by-one error, is to study how the data from the table that should not be read are generated.
 
@@ -193,9 +195,9 @@ Move one step south.
 
 ## 01 - The Old Man fighting
 
-### What to do when you find a reuse after free
+### What to do when you find a Reuse After Free
 
-> So we now have found a Reuse After Free. When we have this kind of bad pattern, it would be fun to find something in the game that any writes any values here, which will later be used as if they were legit Pokémon descriptions.
+> So we now have found a RAF. When we have this kind of bad pattern, it would be fun to find something in the game that any writes any values here, which will later be used as if they were legit Pokémon descriptions.
 >
 > There is one place in the code that write to `D887`: it is when you link two GameBoys to play Player versus Player. It writes the name of the other player here. But that's not interesting to us because once you entered the PvP mode, you can not go back to normal game. You need to reset the GameBoy, which resets all memory.
 >
@@ -233,10 +235,23 @@ Start the fight, and pause (press `esc`) just after the Old Man has choosed the 
 
 show it.
 
-## 02 Fighting MissingNo
+## 02 Fighting MissingNo.
 
 > I can now leave town, hence enter a new zone and the `86`s will be overwritten by correct data. But if I Fly to another town...
 
 Fly back to CINNABAR ISLAND
 
-> The probability is reset to `00` but the 
+> The probability is reset to `00` but following garbage remains. Earlier the garbage was made of the list of Pokémons for the last Zone I visited. But now it's made of my name,  which is something I can somehow control. There are heighty-height characters I can choose out of 256 possible values. So if you could choose the pokemon you would encounter, which one will you choose ?
+
+The audience will probably answer with a legendary Pokémon, maybe Mew or Mewtwo
+
+> Mew is not possible, it's code is not in the 70 possible characters for the name. Mewtwo is Possible though, its code is `83` so if my name is set to `DDDDDDD` I can fight it. I can only choose level between 127 and 191, he will heal fulllife constantly, but I can fight it. But it's not what one I choose. There is something more interesting pokemon to fight than a legendary one, lets see what we choosed.
+
+Use surf to go on the shore and encounter a `'M` or a `MissingNo.`. If you encouter something else, explain the audiance that you have just been unlucky and got one of the last pokemon of the table, and try again. If you encounter a MissingNo., tell them that's this is Pokémon number `86` with level `86` (which is hexadecimal code for 134). If it is M', tell them it is Pokémon number `00` with level either `50` or `00`
+
+![Fighting a glitched Pokémon](fighting%20`M.PNG)
+
+> So here is our Pokémon. What happens? The value is not a correct one, so when the code uses it to calculate the address of the name of the Pokémon or the address of the data for the picture, it reaches some weird data.
+>
+> This starts to be fun: We hade an off-by-one, causing a Reuse After Free, and now we know how to inject weird data to fight a glitched pokemon. But there is more to come ;)
+>
