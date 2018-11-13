@@ -304,13 +304,13 @@ Delete all the highlighting made with EpicPen. In the memory view of the debugge
 
 > We have this `C9` here that is the value for item TM01, then a `01` which is its quantity. Then a `CA` for TM02, `CB`, ... `CD`, then `44` which is the code for X SPECIALs and we now have `FF` stacks of it, then `01` DOM FOSSIL (`29`) and an `FF` which is a list terminator.
 >
-> Also there is something else. But please be kind, don't do this in your production code...
+> Also there is something else. But please... don't do this in your production code...
 >
-> If we look before `D31E` at `D31D` there is this `07`. It is the number of item I have in my Items List. So we both have a terminator to tell where the end of the list is, and a length to tell us what the length of the list if. We all know something wrong happen.
+> If we look before `D31E` at `D31D` there is this `07`. It is the number of items I have in my Items list. We have both a terminator to tell where the list ends, and a count of the number or items contained in the list. We all know something wrong will happen.
 >
-> As an example, if I toss the HM01, it will decreased the amount of item, and copy each item in memory two bytes backwards, until it copies the `FF` terminator. Or the glitched `FF` item number.
+> As an example, if I toss the HM01, it will decreased the amount of item, and copy each item in memory two bytes backwards, until it copies the `FF` terminator. Or, in our case, the glitched `FF` item number.
 >
-> So if we continue to toss all the HM0x, we decrease the counter to `02`, but instead of copying the `FF` terminator in place of the last X SPECIAL item, it stops. So the previous X SPECIAL stack stays here *and* is copied. So I now have plenty of stacks of X SPECIAL.
+> So if we continue to toss all the HM0x, we decrease the counter to `02`, but instead of copying the `FF` terminator in place of the last X SPECIAL item, it stops. So the previous X SPECIAL stack stays here *and* is copied. So we now have plenty of stacks of X SPECIAL.
 
 ![Multipyed item lines](Multiplying%20items%20lines.PNG "lots of X SPECIALs!")
 
@@ -318,29 +318,29 @@ Delete all the highlighting made with EpicPen. In the memory view of the debugge
 >
 > So we can just toss them all.
 
-Toss all that you can. Use `Up` key to select max quantity, repeat until the menu is wuit when you try to toss the first item.
+Toss all that you can. Use `Up` key to select max quantity, repeat until pressing button on the first line exits the menu..
 
-> Now we have zero items, even if it displays lot of item.
+> Now we have zero items, even if it displays lot of them.
 >
 > We hade an off-by-one error, we could Reuse After Free a buffer with some data we could control, and now we have desynchronized the size and content of the item list.
 >
-> Let's go just one step further :)
+> Let's go one step further :)
 
 ## 255 Items
 
-> If you remember it, after the X SPECIAL I began with an item called DOME FOSSIL. This is a quest item: an item I can give to an NPC to advance in the game. I will show you.
+> After the X SPECIAL, in the beginning of this talk, I hade an item called DOME FOSSIL. This is a quest item: an item I can give to a NPC to advance in the game. I will show you.
 
 Go to south shore, then left, go up to enter the last house, then right to the last door in the corridor, and up to meet the Doctor. Speak to him.
 
 ![Meeting the Doctor](Meeting%20the%20Doctor.PNG "Speak to him.")
 
-> This doctor can resurect Pokémons from fossils. When I speak to him, the game will iterate through items in my list until it finds either the DOME FOSSIL (code `29`) or the end of the list (using the `FF` terminator, ignororing the `00` length).
+> This doctor can resurect Pokémons from fossils. When I speak to him, the game will iterate through items IDs in my list until it finds either the DOME FOSSIL (code `29`) or the end of the list (using the `FF` terminator, ignororing the `00` length).
 
 Do it.
 
-> It finds it, removes it from the inventory and decreases the item count. It was `00` and `00` minus ones is ? Not -1, it is `FF`. Just like two hours before 1am is not -1am it is 11pm. This is called an Underflow.
+> It finds it, removes it from the inventory and decreases the item count. It was `00` and `00` minus ones is? Not -1, it is `FF`. Just like two hours before 1am is not -1am it is 11pm. This is called an Underflow.
 >
-> the value of the item counter is now `FF`, i.e. 255. Which of course is way more than the real size of the items table. So now if we try to display the item list and scroll down past the `Cancel` menu, it will show things generated from random data. This is called a Buffer Overflow.
+> the value of the item counter is now `FF`, i.e. 255. Which of course is way more than the real size of the items table. So now if we try to display the Items menu and scroll down past the `Cancel` menu, it will show things generated from random data. This is called another Buffer Overflow.
 
 Show the Item menu, and scroll down.
 
@@ -350,57 +350,57 @@ Show the Item menu, and scroll down.
 
 ## 35th item is a nugget in celadon
 
-Fly to CELADON CITY (center of map) and walk East a few step to reach this position:
+Fly to CELADON CITY (center of map) and walk East a few steps to reach this position:
 
 ![Place to go in CELADON CITY](Proper%20place%20in%20CELADON%20CITY.PNG "Go there.")
 
-> When I am in this place, all the data in memory are ok and none make the game hang when I display the item list. Lets have a look at the 35th item.
+> When I am in this place, all the data in memory are ok and none makes the game hang when I display the item list. Lets have a look at the 35th item.
 
-Go down 34 times in item list, untill you reach GOLD NUGGET 1X. Leave the menu and come back to clean display.
+Go down 34 times in item list, until you reach GOLD NUGGET X1. Leave the menu and come back to clean display.
 
 ![Inventory now contains GOLD NUGGET](GOLD%20NUGGET.PNG "Free Gold!")
 
-> Here we have this item, a GOLD NUGGET. If I move left one step, see what happens.
+> Here we have this item, one GOLD NUGGET. If I move left one step, see what happens.
 
 Leave menu, walk one step left, come back into menu.
 
 > We now have a CARD KEY. If we go left once more, we have a LEAF STONE.
 >
-> The overflow makes the game use the coordinates of the player in the map as an item number. Which means that by moving I can change the item I possess.
+> What happens? The overflow makes the game use the coordinates of the player in the map as an item number. Which means that by moving I can change the item I possess.
 
 ## Warpzone opened
 
->But in pokemon, using the Select button, I can switch items. It mean I can also change my coordinates. If I go back to the first item (my 255 X SPECIALs), I can toss 254 of them
+>But in pokemon, using the Select button, I can switch items. It means I can also change my coordinates. If I go back to the first item (my 255 X SPECIALs), I can toss 254 of them.
 
 Press `Up` twice to enter the quantity while tossing them
 
-> so I have only one. I now press Select to select it, go down to the 35th item, press select again, and now my coordinates are the one corresponding to "one X SPECIAL".
+> Now I have only one. I press Select to select it, go down to the 35th item, press select again, and now my coordinates are the one corresponding to "one X SPECIAL".
 >
 > If I leave the menu, nothing has changed: this is because the tiles for the map have already been loaded. But if I move to load some more data...
 
-Go right, down and right again after first stairs.
+Go right, passe the bottom trees, go down until you passe the first sairs, then right.
 
-> I can reach this completely unexpected warp zone. Have you seen the Matrix move ?
+> I can reach this completely unexpected warp zone. Have you seen the Matrix movie ?
 
 ![The warp zone is a large blank empty space](Warp%20Zone.PNG "!?")
 
 ## 8F as third item
 
-> I now hav a large empty space, I can go anywhere I want, so I can get any random item.
+> I now have a large empty space, I can go anywhere I want, so I can get any random item.
 
-Walk left and show various items until you start seeing 1F, 2F, 3F... items
+Walk right and show various items in your inventory until you start seeing 1F, 2F, 3F... items
 
 > There is one very interesting item I can get, it is the 8F item.
 
 Find it and swap it with the Gold Nugget (which is first item, not third, ignore the name of this chapter / game save number 13)
 
-> Now we can fly back to any town so I reset the coordinates to something valid. And we have this 8F item.
+> Now we can fly back to any town to reset the coordinates to something valid. And we have this 8F item.
 >
-> When you use an item in Pokemon, it looks in a table to find the address of the code to execute to handle the use of the item. Now you start to know how it works: since we can get glitch items with wrong IDs, we will overflow the table and get some random address and execute some random code. The 8F item is funny because it make us run this code:
+> When you use an item in Pokemon, it looks in a table to find the address of the code to execute to handle the use of the item. Now you know how it works: since we can get glitch items with wrong IDs, we will overflow the table and get some random address and execute some random code. The 8F item is funny because it makes us run this code:
 
 Use it, the breakpoint at `D163` should stop execution
 
-> We are here, at `D163`. You can see the label, it says `wPartyDataStart`. That is the address of the list of Pokémons you carry with you. Of course, if you try to run the data for the Pokémons as if where opcode for the processor, that won't work. Here I'm stopped on a breakpoint, but if I run...
+> We are here, at `D163`. You can see the label, it says `wPartyDataStart`. That is the address of the list of Pokémons you carry with you. Of course, if you try to run the data for the Pokémons as if where opcode (i.e. instruction codes) for the processor, that won't work. Here I'm stopped on a breakpoint, but if I run...
 
 Run (`F9` key)
 
@@ -408,7 +408,7 @@ Run (`F9` key)
 
 > It crashes.
 >
-> So we hade an off-by-one error, leading to a Reuse After Free, we could craft our player's name to inject data that are reused as Pokémon IDs, play against a glitched Pokémon. That creates a buffer overflow which allows us to get stacks of 255 items, then an underflow that gives us 255 acessible item. This gives us another buffer overflow which allows us to write to our coordinates, go to the warpzone, and from there write many different values in our item list. We can then get the 8F which can be used, executing our list of Pokémon as if it were code, which beautifully crashes the game.
+> So we hade an off-by-one error, leading to a Reuse After Free, we could craft our player's name to inject data that are reused as Pokémon IDs, play against a glitched Pokémon. That creates a buffer overflow which allows us to get stacks of 255 items, then an underflow that gives us 255 acessible items. This gives us another buffer overflow which allows us to write to our coordinates, go to the warpzone, and from there write many different values in our item list. We can then get the 8F which can be used, executing our list of Pokémons as if it were code, which beautifully crashes the game.
 
 ## Bootstraped clean
 
