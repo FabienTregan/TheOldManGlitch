@@ -95,7 +95,7 @@ c49c | 7f7f7f7f7f7f7f |
 
 Your screen should now look like this (except the `Breakpoints` windows which should be closed) :
 
-![alt text](Initial%20Screen%20Setup.PNG "Initial screen setup.")
+![alt image](Initial%20Screen%20Setup.PNG "Initial screen setup.")
 
 ## Introduction
 
@@ -164,5 +164,29 @@ Note : you need to scroll down a few lines. It should be highlited in pale pink.
 > Since bottom *left* corner of my character does not stand on water, we will use the default table of pokemon to determine the type and level of the encounter, when we used the water table to get the probability of encounter. Hence we encounter a non-Water Pokémon while surfing on a Water Tile.
 
 ### Reuse after free
+
+> Something interesting since we have an off-by-one error, is to study how the data from the table that should not be read are generated.
+
+go left past the `GYM` house, then up to this position :
+
+![alt Position yourself just above the pond on north of the town](Position%20to%20show%20Reuse%20After%20Free.PNG "Position to go before continuing")
+
+Be carefull not to walk on the pond yet, stay in town.
+
+Both tables of encounters should be highlighted on screen. If not, do it now.
+
+> Here we are in a Town, which is a safe zone with zero probability of encountering a Wild Pokemon except in Water. If we walk forward one step North, we will change of Zone and some code will be executed that generate the new table of possible encounter. See what will change.
+
+Move one step north
+
+> Everything changed: The probability in `D887` went from `00` to `19`, and the whole list of possible Pokémon Types and their level changed. Now if I go back in town, see what happens
+
+Move one step south.
+
+> We executed the code that fills the table for the towns. The towns are safe, there are no possible encounter, so it sets both encounter probabilities to `00`. Then since there is no probability of encounter, there is no need to fill the remaining of the encounter table. So anything that was here stays here, it is just garbage.
+>
+> The Zone on the east contains only water, so for the same reason when enter it, the probability of encountering a non-Water Pokémon is set to `00` and the garbage stay there. But because we have this off by one error, we are going to use the garbage anyway. This is called a Reuse After Free.
+>
+> So we hade an off-by-one error, which makes us read the wrong table, and since this table is not reinitialised we now have a Reuse After Free.
 
 ### What to do when you find a reuse after free
