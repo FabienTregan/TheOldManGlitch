@@ -425,7 +425,7 @@ Run (`F9` key)
 
 ![Debugger ready to explain the crafted payload](Bootstraped%20clean.PNG)
 
-> The item second octet in this buffer is `24`, this is because our first Pokémon is a Pidgey. This `24` in `D164` translates for the processor into this `inc h` instruction where have in second line.
+> The second byte in this buffer is `24`, this is because our first Pokémon is a Pidgey. This `24` in `D164` translates for the processor into this `inc h` instruction we have in second line.
 
 Highlight both in blue with EpicPen.
 
@@ -433,23 +433,23 @@ Highlight both in blue with EpicPen.
 
 Hightlight also.
 
-> And then Tentacool and Kanghaskhan, `18 02` which means, opcode for `jr 02`, which jumps two instructions further. 
+> And then Tentacool and Kanghaskhan, `18 02`, which is opcode for `jr 02`, which jumps two instructions further. 
 
 Highlight.
 
-> Then we have two `FF`: this `FF`s are is list fillers/terminator. Because we can have a variable number of Pokémon with us. These are the opcodes of the two `rst 38` instructions.
+> Then we have two `FF`: these `FF`s are list fillers / terminator. Because we can have a variable number of Pokémon withs us. These are the opcodes of the two `rst 38` instructions.
 
 Higlight using grey color.
 
-> And now you know how it is: when we have `FF` as a terminator, we also have a counter at the beginning of the list. It is the `05` as `D163`.
+> And now you know how it is: when we have `FF` as a terminator, we also have a length at the beginning of the list. It is the `05` at `D163`.
 
 Highlight in magenta.
 
-> After the two `FF`s, we have the actual data of the Pokémons. The first three bytes are `24` this is again the type of pokemon, PIDGEY, so we have another `inc h`
+> After the two `FF`s, we have the actual data of the Pokémons. The first three bytes are `24` this is again the kind of Pokémon, a PIDGEY, so we have another `inc h`
 
 Highlight in yellow
 
-> And then the two next numbers are the current health of my Pokémon. Having it POISONNED and then giving him ANTIDOTE we can stop him at 233 health, which is, on two bytes `00 E9`. This gives us a `nop` and a `jp hl`.
+> Finally the two next numbers are the current health of the first Pokémon. Having it POISONNED and then giving him ANTIDOTE we can stop him at 233 health, which is, on two bytes `00 E9`. This gives us a `nop` and a `jp hl`.
 
 Highlight everything in yellow
 
@@ -465,24 +465,24 @@ You screen should now look like this:
 
 Execute each instructions while you explain them (`F3`)
 
-> * First instruction is useless, it decrement register `b` which is currently `00` (you can see it on top right of the debugger as the two first numbers of the `bc` register). It will then underflow to `FF`. We don't really care, but remember this instruction is in fact the number of Pokémon we carry: we hare lucky to be able to create an instruction that just do no arm.
-> * Second instruction increments register `h`. We know that `hl` contain `D163` because it is used by the previous code to jump at the `D163` code we are now. `hl` is `D163`, so `h` is `D1`, we increment it and it is now `D2`
-> * Then we have `ld l, 22`, which loads 22 into register `l`. `hl` was `D263`, it is now `D222`
-> * Then we jump forward two instructions. This makes us jump over the two `FF`s this is nice because `FF` is opcode for `rst 38` which would reset the GameBoy!
+> * First instruction is useless, it decrements register `b` which is currently `00` (you can see it on top right of the debugger as the two first numbers of the `bc` register). It will then underflow to `FF`. We don't really care, but remember this instruction is in fact the number of Pokémon we carry: we are lucky to be able to create an instruction that just do no arm.
+> * Second instruction increments register `h`. We know that `hl` contains `D163` because it is used by the previous code to jump at the `D163` code we are now. `hl` is `D163`, so `h` is `D1`, we increment it and it is now `D2`
+> * Then we have `ld l, 22`, which loads `22` into register `l`. `hl` was `D263`, it is now `D222`
+> * Then we jump forward two instructions. This makes us jump over the two `FF`s. This is nice because `FF` is opcode for `rst 38` which would reset the GameBoy!
 > * We have another `24` so we `inc h` again, now `hl` is `D322`
-> * Then we execute the `nop` with opcode `00`. `nop` is a very interesting instruction which does nothing : `nop` stands for No Operation. Then we continu to the last instruction
-> * `jp hl`. We know that `hl`value is `D322`, we know we go there.
+> * Then we execute the `nop` with opcode `00`. `nop` is a very interesting instruction which does nothing : `nop` stands for No Operation. Then we continue to the last instruction
+> * `jp hl`. We know that `hl`value is `D322`, we are sure to jump there.
 >
-> We now jumped ot D322. And if you remember, our item list starts at `D31E`, so we are no executing the ID of our third item as an opcode. Bu you remember that, going to the warp zone, we can easily easily edit the content of the item list. So it is now easyer to large a second, larger program.
+> We now jumped to D322. And if you remember, our item list starts at `D31E`, so we are now executing the ID of our third item as an opcode. But you remember that, going to the warp zone, we can easily edit the content of the item list. So it is now easyer to write a second, larger program.
 >
->So we hade an simple off-by-one error, we found a Reuse After Free, injected some data, used buffer overflow to gain unlimited items, made and underflow to gain a better buffer overflow on item list, used edit the memory, foudn an item that allow to execute our Pokémons list, and from there can execute any random code in the item list.
+> We started with a simple off-by-one error, we found a Reuse After Free, injected some data, created a buffer overflow to gain too many items, provocated an underflow to gain a more interesting buffer overflow on the item list, used it to edit the memory, found an item that allows us to execute our Pokémons list, and from there can execute any random code in the item list.
 
 ## Final demo
 
-> From there everything is possible. In [this video](https://www.youtube.com/watch?v=D3EvpRHL_vk) we can see someone who
-> * execute some code to go through walls with bicycle
-> * execute some code that will write the coordinates of the player as a byte at an address then increment this address (repeating it about 160 time to write a program)
-> * troll the game by visiting a computer he should not mess with not to introduce bug in the game :)
-> * execute the code he wrote moving on the bicycle.
+> From there everything is possible. In [this video](https://www.youtube.com/watch?v=D3EvpRHL_vk) we can see someone who:
+> * executes some code to go through walls with bicycle
+> * executes some other code that will write the coordinates of the player as a byte at an address then increment this address (repeating it about 160 times to write a program)
+> * trolls the game by visiting a computer he should not mess with not to introduce bug in the game :)
+> * executes the code he wrote moving on the bicycle.
 
 I strongly advise you to save the video locally for presentation.
