@@ -351,7 +351,7 @@ Show the Item menu, and scroll down.
 
 Fly to CELADON CITY (center of map) and walk East a few step to reach this position:
 
-![Place to go in CELADON CITY](Proper%20place%20in%02CELADON%20CITY.PNG "Go there.")
+![Place to go in CELADON CITY](Proper%20place%20in%20CELADON%20CITY.PNG "Go there.")
 
 > When I am in this place, all the data in memory are ok and none make the game hang when I display the item list. Lets have a look at the 35th item.
 
@@ -366,4 +366,21 @@ Leave menu, walk one step left, come back into menu.
 > We now have a CARD KEY. If we go left once more, we have a LEAF STONE.
 >
 > The overflow makes the game use the coordinates of the player in the map as an item number. Which means that by moving I can change the item I possess.
+
+## Warpzone opened
+
+>But in pokemon, using the Select button, I can switch items. It mean I can also change my coordinates. If I go back to the first item (my 255 X SPECIALs), I can toss 254 of them
+
+Press `Up` twice to enter the quantity while tossing them
+
+> so I have only one. I now press Select to select it, go down to the 35th item, press select again, and now my coordinates are the one corresponding to "one X SPECIAL".
+>
+> If I leave the menu, nothing has changed: this is because the tiles for the map have already been loaded. But if I move to load some more data...
+
+Go right, down and right again after first stairs.
+
+> I can reach this completely unexpected warp zone. Have you seen the Matrix move ?
+
+![The warp zone is a large blank empty space](Warp%20Zone.PNG "!?")
+
 
