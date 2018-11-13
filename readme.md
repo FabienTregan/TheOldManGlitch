@@ -295,4 +295,32 @@ do it
 
 show it
 
-## 06 - 0 items but 255 XSpecial anyway
+## 0 items but 255 XSpecial anyway
+
+> Lets have a look at how the items are represented in memory
+
+Delete all the highlighting made with EpicPen. In the memory view of the debugger, go to address `WRA1:D31E`
+
+> We have this `C9` here that is the value for item TM01, then a `01` which is its quantity. Then a `CA` for TM02, `CB`, ... `CD`, then `44` which is the code for X SPECIALs and we now have `FF` stacks of it, then `01` DOM FOSSIL (`29`) and an `FF` which is a list terminator.
+>
+> Also there is something else. But please be kind, don't do this in your production code...
+>
+> If we look before `D31E` at `D31D` there is this `07`. It is the number of item I have in my Items List. So we both have a terminator to tell where the end of the list is, and a length to tell us what the length of the list if. We all know something wrong happen.
+>
+> As an example, if I toss the HM01, it will decreased the amount of item, and copy each item in memory two bytes backwards, until it copies the `FF` terminator. Or the glitched `FF` item number.
+>
+> So if we continue to toss all the HM0x, we decrease the counter to `02`, but instead of copying the `FF` terminator in place of the last X SPECIAL item, it stops. So the previous X SPECIAL stack stays here *and* is copied. So I now have plenty of stacks of X SPECIAL.
+
+![Multipyed item lines](Multiplying%20items%20lines.PNG "lots of X SPECIALs !")
+
+> But there is a problem: since the item counter has been decreased to `02`, it displays lot of X SPECIALS stacks, but I can only use the two first ones. The third one is treated as the `CANCEL` menu and I can't go further.
+>
+> So we can just toss them all.
+
+Toss all that you can. Use `Up` key to select max quantity, repeat until the menu is wuit when you try to toss the first item.
+
+> Now we have zero items, even if it displays lot of item.
+>
+> We hade an off-by-one error, we could Reuse After Free a buffer with some data we could control, and now we have desynchronized the size and content of the item list.
+>
+> Let's go just one step further :)
