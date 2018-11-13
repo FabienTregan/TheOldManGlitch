@@ -476,3 +476,12 @@ Execute each instructions while you explain them (`F3`)
 >
 >So we hade an simple off-by-one error, we found a Reuse After Free, injected some data, used buffer overflow to gain unlimited items, made and underflow to gain a better buffer overflow on item list, used edit the memory, foudn an item that allow to execute our Pokémons list, and from there can execute any random code in the item list.
 
+## Final demo
+
+> From there everything is possible. In [this video](https://www.youtube.com/watch?v=D3EvpRHL_vk) we can see someone who
+> * execute some code to go through walls with bicycle
+> * execute some code that will write the coordinates of the player as a byte at an address then increment this address (repeating it about 160 time to write a program)
+> * troll the game by visiting a computer he should not mess with not to introduce bug in the game :)
+> * execute the code he wrote moving on the bicycle.
+
+I strongly advise you to save the video locally for presentation.
