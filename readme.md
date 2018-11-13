@@ -32,6 +32,10 @@
 
   All addresses are given for the Pokémon Red English version ROM.
 
+### Disassembled and commented source code
+
+  Though not used udring the presentation, you may want to download the code from [https://github.com/pret/pokered]
+
 ### Documentation
 
   The `gb-programming-manual.pdf` document is an unofficial GB Developper doc.  Chapter 4 - `CPU Instruction Set` - list all instructions and opcodes.
@@ -117,7 +121,7 @@ move around while saying this, stop next to the East shore facing east and re-op
 
 Show while saying
 
-> Here I am safe because I am in a town, but outside of towns if I walk in Grass, in Caves or if I surf in Water I can be attacked by Wild Pokémons. I can fight them and try to capture them. Once I've captured them I can use them to fight other Wild Pokémons or again NPC's Pokémon to progress in the game. The Pokémons can level up, and when they have leveled up enough they can learn new attacks. Once I've made enough progress in the game, I can use some of these attack to do other things than fighting. Here as an example I can use my GYARADOS' SURF attack to go in water.
+> Here I am safe because I am in a town, but outside of towns if I walk in Long Grass, in Caves or if I surf in Water I can be attacked by Wild Pokémons. I can fight them and try to capture them. Once I've captured them I can use them to fight other Wild Pokémons or again NPC's Pokémon to progress in the game. The Pokémons can level up, and when they have leveled up enough they can learn new attacks. Once I've made enough progress in the game, I can use some of these attack to do other things than fighting. Here as an example I can use my GYARADOS' SURF attack to go in water.
 
 do it,move at least one tile east so you are no longer on the shore.
 
@@ -138,6 +142,18 @@ Wait for an attack, which hopefully will be a Level 3 RATTATA, press a key to op
 > Astonishing, isn't it ? This quiet unimpressiv bug is the starting point of a glitch which is the most famous of the Pokémon game, probably of the GameBoy, and maybe one of the top 10 most famous bugs in videogame history.
 
 ### The off-by-one error
+
+> Now to understand why this bug is so famous, let's have a look at what happens inside the code. There are to arrays that help determinate which Wild Pokémon you will encounter : One is here at address `D887`, starting with this `00`, the other one is a little further, starting with this `05`. The first one is default case, the second one is for Water Pokémons. The first number is the probability of encountering a Wild Pokémon (`00` meaning no encounter because we are safe when in town, and `05` meaning 5 chances out of `256` when on Water). Then we have a list of Pokémons that can be encountered going like this : Level of the most probable encounter, followed by type of the Pokémon of the most probable encounter, Level of a bit less probable encounter, and its type, again and again until the ninth one (with 1.2% encounter probability).
+>
+> Looking at the code, we see at address `789E` that we load the address `C45D` into `ld` register,
+Note : It should be highlited in pale pink.
+> then load into register `c` what is at this address, load `wGrassTile` into `a` and compare `a` and `c`. `C45D` is the address of this tile on the bottom right quarter of my character, so here it is Water. If it is Water we'll read the probability of encountering a Wild Pokémon in the second table - the Water one - else we use the first one.
+>
+> We can then generate a random number, compare it with the given probability to determine if we encountered a Wile Pokémon. If we encounter one, we need to determine which one and for this, line `78DB`, we read again the type of tile we stand on at address `C45C`.
+Note : you need to scoll down a few lines. It should be highlited in pale pink.
+> And maybe you saw the problem? We read `C45D` - bottom right quarter of my position - to say 'Were are on Water, we have 5 chances out of 256 to encounter a Wild Pokémon', and now we look at `C45C`, which is bottom *left* corner, to determine which is encountered pokemon. We have what we call an off-by-one error.
+>
+> Since bottom *left* corner of my character does not stand on water, we will use the default table of pokemon to determine the type and level of the encounter, when we used the water table to get the probability of encounter. Hence we encounter a non-Water Pokémon while surfing on a Water Tile.
 
 ### Reuse after free
 
