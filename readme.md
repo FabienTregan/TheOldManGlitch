@@ -284,3 +284,15 @@ Scroll down:
 > So we hade an off-by-one error, leading to a Reuse After Free. We could craft our name to inject invalid values in the reused value, and nowwe have a buffer overflow, allowing us to multiply our sixth item ! At least something usefull :) But there is more.
 >
 > You see that the game does not know how to display 129 quantity. This is because in Pokémon you are limited to stacking 99 items. Lets play with that.
+
+## 255 X SPECIALs
+
+> I can toss items. So lets toss two X SPECIALs.
+
+do it 
+
+> We now have 127 X SPECIALs, which is `b01111111`. So we can encounter the glitched Pokémon again, switch the heighth bit again, and have `b11111111`, which is 255.
+
+show it
+
+## 06 - 0 items but 255 XSpecial anyway
