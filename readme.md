@@ -456,3 +456,23 @@ You screen should now look like this:
 
 ![Highlighted Payload](Payload.PNG)
 
+## Run the bootstrap
+
+> We do not have much room to inject code, and it is not easy to choose which opcodes we will inject, but we managed to make a small program.
+>
+> We now can now use item 8F again and see what this code is doing:
+
+Execute each instructions while you explain them (`F3`)
+
+> * First instruction is useless, it decrement register `b` which is currently `00` (you can see it on top right of the debugger as the two first numbers of the `bc` register). It will then underflow to `FF`. We don't really care, but remember this instruction is in fact the number of Pokémon we carry: we hare lucky to be able to create an instruction that just do no arm.
+> * Second instruction increments register `h`. We know that `hl` contain `D163` because it is used by the previous code to jump at the `D163` code we are now. `hl` is `D163`, so `h` is `D1`, we increment it and it is now `D2`
+> * Then we have `ld l, 22`, which loads 22 into register `l`. `hl` was `D263`, it is now `D222`
+> * Then we jump forward two instructions. This makes us jump over the two `FF`s this is nice because `FF` is opcode for `rst 38` which would reset the GameBoy!
+> * We have another `24` so we `inc h` again, now `hl` is `D322`
+> * Then we execute the `nop` with opcode `00`. `nop` is a very interesting instruction which does nothing : `nop` stands for No Operation. Then we continu to the last instruction
+> * `jp hl`. We know that `hl`value is `D322`, we know we go there.
+>
+> We now jumped ot D322. And if you remember, our item list starts at `D31E`, so we are no executing the ID of our third item as an opcode. Bu you remember that, going to the warp zone, we can easily easily edit the content of the item list. So it is now easyer to large a second, larger program.
+>
+>So we hade an simple off-by-one error, we found a Reuse After Free, injected some data, used buffer overflow to gain unlimited items, made and underflow to gain a better buffer overflow on item list, used edit the memory, foudn an item that allow to execute our Pokémons list, and from there can execute any random code in the item list.
+
