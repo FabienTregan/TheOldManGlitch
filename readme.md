@@ -407,4 +407,52 @@ Run (`F9` key)
 
 > It crashes.
 >
-> So we hade an off-by-one error, leading to a Reuse After Free, we could craft our player's name to inject data that are reused as Pokémon IDs, play against a glitched Pokémon. That creates a buffer overflow which allows us to get stacks of 255 items, then an underflow that gives us 255 acessible item. This gives us another buffer overflow which allows us to write to our coordinates, go to the warpzone, and from there write many different values in our item list. We can then get the 8F which can be used, executing our list of Pokémon as if it were code, which beautifully crashes the game. 
+> So we hade an off-by-one error, leading to a Reuse After Free, we could craft our player's name to inject data that are reused as Pokémon IDs, play against a glitched Pokémon. That creates a buffer overflow which allows us to get stacks of 255 items, then an underflow that gives us 255 acessible item. This gives us another buffer overflow which allows us to write to our coordinates, go to the warpzone, and from there write many different values in our item list. We can then get the 8F which can be used, executing our list of Pokémon as if it were code, which beautifully crashes the game.
+
+## Bootstraped clean
+
+> Now we can execute code in a place on which we have some control. Because of course we can choose the Pokémons I carry. Could we craft a list of Pokémons, in the same way we crafted our name to fight against glitched pokemons, that could actually be interpreted as interesting code by the processor?
+>
+> Imagine we take those Pokemons with us:
+
+* Go to debugger (`F9`)
+* Load (`ctrl-l`) the `14' - Boostraped clean.sna` state
+* In the memory view, go to `D163` (click it, then `ctrl-g` and enter `1:D163`)
+* In the code view, go to `D163` (click it, then `ctrl-g` and enter `1:D163`)
+* Scroll the code view until the breakpoint is the first line
+* Run (`F9`) again
+
+![Debugger ready to explain the crafted payload](Bootstraped%20clean.PNG)
+
+> The item second octet in this buffer is `24`, this is because our first Pokémon is a Pidgey. This `24` in `D164` translates for the processor into this `inc h` instruction where have in second line.
+
+Highlight both in blue with EpicPen.
+
+> The second and third are PARASECT and ONIX, codes are `2E` and `22`. `2E`is the `ld l,` ("load into register l"), hence we have this instruction `ld l, 22`
+
+Hightlight also.
+
+> And then Tentacool and Kanghaskhan, `18 02` which means, opcode for `jr 02`, which jumps two instructions further. 
+
+Highlight.
+
+> Then we have two `FF`: this `FF`s are is list fillers/terminator. Because we can have a variable number of Pokémon with us. These are the opcodes of the two `rst 38` instructions.
+
+Higlight using grey color.
+
+> And now you know how it is: when we have `FF` as a terminator, we also have a counter at the beginning of the list. It is the `05` as `D163`.
+
+Highlight in magenta.
+
+> After the two `FF`s, we have the actual data of the Pokémons. The first three bytes are `24` this is again the type of pokemon, PIDGEY, so we have another `inc h`
+
+Highlight in yellow
+
+> And then the two next numbers are the current health of my Pokémon. Having it POISONNED and then giving him ANTIDOTE we can stop him at 233 health, which is, on two bytes `00 E9`. This gives us a `nop` and a `jp hl`.
+
+Highlight everything in yellow
+
+You screen should now look like this:
+
+![Highlighted Payload](Payload.PNG)
+
