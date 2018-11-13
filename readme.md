@@ -383,4 +383,28 @@ Go right, down and right again after first stairs.
 
 ![The warp zone is a large blank empty space](Warp%20Zone.PNG "!?")
 
+## 8F as third item
 
+> I now hav a large empty space, I can go anywhere I want, so I can get any random item.
+
+Walk left and show various items until you start seeing 1F, 2F, 3F... items
+
+> There is one very interesting item I can get, it is the 8F item.
+
+Find it and swap it with the Gold Nugget (which is first item, not third, ignore the name of this chapter / game save number 13)
+
+> Now we can fly back to any town so I reset the coordinates to something valid. And we have this 8F item.
+>
+> When you use an item in Pokemon, it looks in a table to find the address of the code to execute to handle the use of the item. Now you start to know how it works: since we can get glitch items with wrong IDs, we will overflow the table and get some random address and execute some random code. The 8F item is funny because it make us run this code:
+
+Use it, the breakpoint at `D163` should stop execution
+
+> We are here, at `D163`. You can see the label, it says `wPartyDataStart`. That is the address of the list of Pokémons you carry with you. Of course, if you try to run the data for the Pokémons as if where opcode for the processor, that won't work. Here I'm stopped on a breakpoint, but if I run...
+
+Run (`F9` key)
+
+![Crashed game after using item F8](Crash.PNG "Arg!")
+
+> It crashes.
+>
+> So we hade an off-by-one error, leading to a Reuse After Free, we could craft our player's name to inject data that are reused as Pokémon IDs, play against a glitched Pokémon. That creates a buffer overflow which allows us to get stacks of 255 items, then an underflow that gives us 255 acessible item. This gives us another buffer overflow which allows us to write to our coordinates, go to the warpzone, and from there write many different values in our item list. We can then get the 8F which can be used, executing our list of Pokémon as if it were code, which beautifully crashes the game. 
