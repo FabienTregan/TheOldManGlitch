@@ -311,7 +311,7 @@ Delete all the highlighting made with EpicPen. In the memory view of the debugge
 >
 > So if we continue to toss all the HM0x, we decrease the counter to `02`, but instead of copying the `FF` terminator in place of the last X SPECIAL item, it stops. So the previous X SPECIAL stack stays here *and* is copied. So I now have plenty of stacks of X SPECIAL.
 
-![Multipyed item lines](Multiplying%20items%20lines.PNG "lots of X SPECIALs !")
+![Multipyed item lines](Multiplying%20items%20lines.PNG "lots of X SPECIALs!")
 
 > But there is a problem: since the item counter has been decreased to `02`, it displays lot of X SPECIALS stacks, but I can only use the two first ones. The third one is treated as the `CANCEL` menu and I can't go further.
 >
@@ -324,3 +324,31 @@ Toss all that you can. Use `Up` key to select max quantity, repeat until the men
 > We hade an off-by-one error, we could Reuse After Free a buffer with some data we could control, and now we have desynchronized the size and content of the item list.
 >
 > Let's go just one step further :)
+
+## 255 Items
+
+> If you remember it, after the X SPECIAL I began with an item called DOME FOSSIL. This is a quest item: an item I can give to an NPC to advance in the game. I will show you.
+
+Go to south shore, then left, go up to enter the last house, then right to the last door in the corridor, and up to meet the Doctor. Speak to him.
+
+![Meeting the Doctor](Meeting%20the%20Doctor.PNG "Speak to him.")
+
+> This doctor can resurect Pokémons from fossils. When I speak to him, the game will iterate through items in my list until it finds either the DOME FOSSIL (code `29`) or the end of the list (using the `FF` terminator, ignororing the `00` length).
+
+Do it.
+
+> It finds it, removes it from the inventory and decreases the item count. It was `00` and `00` minus ones is ? Not -1, it is `FF`. Just like two hours before 1am is not -1am it is 11pm. This is called an Underflow.
+>
+> the value of the item counter is now `FF`, i.e. 255. Which of course is way more than the real size of the items table. So now if we try to display the item list and scroll down past the `Cancel` menu, it will show things generated from random data. This is called a Buffer Overflow.
+
+Show the Item menu, and scroll down.
+
+![Going past the Cancel menu in item list](Past%20the%20Cancel%20menu.PNG "Oops!")
+
+> It may hang the game. This is because we can find values that are invalid item numbers and some of them can, when we calculate the address of the string, lead to badly handled data. The content of the item list is now dependant on other things in the game. Let's fly to a particular place.
+
+## 35th item is a nugget in celadon
+
+Fly to CELADON CITY (center of map) and walk East a few step to reach this position:
+
+![Place to go in CELADON CITY](Proper%20place%20in%02CELADON CITY.PNG "Go there.")
