@@ -351,4 +351,19 @@ Show the Item menu, and scroll down.
 
 Fly to CELADON CITY (center of map) and walk East a few step to reach this position:
 
-![Place to go in CELADON CITY](Proper%20place%20in%02CELADON CITY.PNG "Go there.")
+![Place to go in CELADON CITY](Proper%20place%20in%02CELADON%20CITY.PNG "Go there.")
+
+> When I am in this place, all the data in memory are ok and none make the game hang when I display the item list. Lets have a look at the 35th item.
+
+Go down 34 times in item list, untill you reach GOLD NUGGET 1X. Leave the menu and come back to clean display.
+
+![Inventory now contains GOLD NUGGET](GOLD%20NUGGET.PNG "Free Gold!")
+
+> Here we have this item, a GOLD NUGGET. If I move left one step, see what happens.
+
+Leave menu, walk one step left, come back into menu.
+
+> We now have a CARD KEY. If we go left once more, we have a LEAF STONE.
+>
+> The overflow makes the game use the coordinates of the player in the map as an item number. Which means that by moving I can change the item I possess.
+
