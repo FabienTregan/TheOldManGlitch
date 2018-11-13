@@ -107,14 +107,16 @@ Your screen should now look like this (except the `Breakpoints` windows which sh
 > First lets start with a few question :
 > * Who here does love Assembly Language ?
 > * Who here writes Assembly ?
-> * Who here likes bugs ?
 > * Who here loves bugs ?
+> * Who here writes bugs ?
 
 ## 00 - Title
 
 ### Showing the bug
 
 > My name is Fabien. Today we are going to speak about a bug. This bugs is known as The Old Glitch, it resides in first generation of Pokémon on Gameboy.
+>
+> I was not the one who found the bug, it has been found many years ago by players. Later some clever people played with it, and I will just tell and explain you what they found.
 
 Quit the menu 
 
@@ -122,11 +124,11 @@ Quit the menu
 
 move around while saying this, stop next to the East shore facing east and re-open the menu.
 
-> Here my character is named GGGGGGG (we'll see later why), he carries 5 items then an `X SPECIAL` and a `DOME FOSSIL` (we'll see why also).
+> Here my character is named GGGGGGG (we'll see later why), he carries five HM0x items then an `X SPECIAL` and a `DOME FOSSIL` (we'll see why also).
 
 Show while saying
 
-> Here I am safe because I am in a town, but outside of towns if I walk in Long Grass, in Caves or if I surf in Water I can be attacked by Wild Pokémons. I can fight them and try to capture them. Once I've captured them I can use them to fight other Wild Pokémons or again NPC's Pokémon to progress in the game. The Pokémons can level up, and when they have leveled up enough they can learn new attacks. Once I've made enough progress in the game, I can use some of these attack to do other things than fighting. Here as an example I can use my GYARADOS' SURF attack to go in water.
+> Here I am safe because I am in a town, but outside of towns if I walk in Long Grass, in Caves or if I surf in Water I can be attacked by Wild Pokémons. I can fight them and try to capture them. Once I've captured them I can use them to fight other Wild Pokémons or against NPC's Pokémons to go further in the game. The Pokémons can level up, and when they have leveled up enough they can learn new attacks. Once I've made enough progress in the game, I can use some of these attacks to do other things than fighting. Here as an example I can use my GYARADOS' SURF attack to go in Water.
 
 do it, move at least one tile east so you are no longer on the shore.
 
@@ -142,7 +144,9 @@ Escape the fight, go on the shore and move north-south
 
 Wait for an attack, which hopefully will be a Level 3 RATTATA, press a key to open combat menu
 
-> Did someone see the bug ? I am in water, but I've been attacked by a RATTATA which abviously is a ground Pokémon and should not be found in Water. Moreover, it is Level 3 and this place is rather late in the game ; I should encounter level 20-30 Pokémons, not level 3.
+> Did someone see the bug?
+>
+> I am in water, but I've been attacked by a RATTATA which abviously is a ground Pokémon and should not be found in Water. Moreover, it is Level three and this place is rather late in the game; I should encounter level 20 to 30 Pokémons, not level 3.
 >
 > Astonishing, isn't it ? This quiet unimpressiv bug is the starting point of a glitch which is the most famous of the Pokémon game, probably of the GameBoy, and maybe one of the top 10 most famous bugs in videogame history.
 
