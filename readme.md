@@ -3,6 +3,8 @@
   This document should contain everything you need to replay or give the the presentation I gave at Jug User Group Toulouse and DevFest 2018 Toulouse.
   If it does not, feel free to contact me via twitter: @ftregan.
 
+![Glitched Items List](Glitched%20Items%20List.PNG)
+
   You will need about 45 minutes to give this presentation, provided you don't do any error which may require a bit of preparation. There are fourteen intermediate game state save files in case something goes wrong during the presentation. They have the same name as the corresponding chapters in this documentation.
 
   Appendix A can be printed or kept accessible as a cheatsheet with address and shortcut during presentation.
