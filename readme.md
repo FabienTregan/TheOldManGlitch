@@ -3,7 +3,9 @@
   This document should contain everything you need to replay or give the the presentation I gave at Jug User Group Toulouse and DevFest 2018 Toulouse.
   If it does not, feel free to contact me via twitter: @ftregan.
 
-  You will need about 45 minutes to give this presentation, provided you don't do any error which may require a bit of preparation. There are fourteen intermediate game state save files in case something goes wrong during the presentation. They have the same name as the corresponding chapters in this documentation. 
+  You will need about 45 minutes to give this presentation, provided you don't do any error which may require a bit of preparation. There are fourteen intermediate game state save files in case something goes wrong during the presentation. They have the same name as the corresponding chapters in this documentation.
+
+  Appendix A can be printed or kept accessible as a cheatsheet with address and shortcut during presentation.
 
 ## Setting up everything
 
@@ -495,3 +497,26 @@ Execute each instructions while you explain them (`F3`)
 > * executes the code he wrote moving on the bicycle.
 
 I strongly advise you to save the video locally for presentation.
+
+## Appendix A - Cheatsheet
+
+Function       | Key
+---------------|-------
+Load state     | Ctrl-l
+Debugger       | Esc
+Run            | F9
+Step           | F3
+Go to address  | Ctrl-G
+
+Type | Address | Content
+-----|---------|--------------------------------
+DATA | 1:D163  | Party Pokémons
+CODE | 1:D163  | Bootstrap [1] 
+DATA | 1:D887  | Wild Pokémon Encounter Table
+DATA | 1:D8A5  | Water Pokémon Encounter Table
+CODE | 4:7870  | TryDoWildeEncounter
+CODE | 4:789E  | Reading Tile at C45D [2]
+CODE | 4:78DB  | Reading Tile at C45C [2]
+
+[1]: "Breakpoint here"
+[2]: "Disabled breakpoint here"
