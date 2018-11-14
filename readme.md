@@ -27,6 +27,7 @@
 * Color for breakpoints, highlight, and current line are change to look better and for important accessibility reasons
 * Keys are set for AZERTY keyboard, using A and Z for buttons, 1 and 2 for start and select
 * The framerate is set to 120fps, about twice the normal speed
+* The main window is enlarged for FullHD and positionned on right of screen
 
 ### EpicPen
 
@@ -53,14 +54,14 @@
 
 ### Run BGB and Pokémon Red
 
-* Start GBG, load the initial state provided in the `00 - Title.sna` file (`ctrl-l`).
+* Start GBG, load the initial state provided in the `00 - Title.sna` file (`Ctrl-L`).
 * Bgb should either load the `Pokemon Red.gb` ROM file or ask you where it is (else try loading it usingby pressing `F12` key).
 
 ### Initial configuration of the screen
 
-* Stretch the screen window of GBG so it takes the full height of the screen and have a 1:1 aspect ratio
-* Move this window to the right side of the screen
-* Open the debugger (`esc` key)
+* Stretch the screen window of GBG so it takes the full height of the screen and have a 1:1 aspect ratio (already done if youuse provided `gbg.ini` file)
+* Move this window to the right side of the screen (already done if youuse provided `gbg.ini` file)
+* Open the debugger (`Esc` key)
 * Move it to the left side
 * Stretch it so it takes full height and the memory view (bottom of the windows) show the hex values but not the text values
 
@@ -70,8 +71,8 @@
   * `1:D163`
   * `4:789E`
   * `4:78DB`
-* Disable the last two breakpoints (they are just used to highlight the lines) (use the `Debug -> Breakpoints` menu)
-* In the memory (hex) view, go to `WRA1:D887` (use `ctrl-g`) and scroll so it is on first line
+* Disable the last two breakpoints (they are used to highlight the lines) (use the `Debug -> Breakpoints` menu)
+* In the memory (hex) view, go to `WRA1:D887` (use `Ctrl-G`) and scroll so it is on first line
 * In the code view, go to `4:7888` and scroll so it is on first line
 * Run the game (`F9` key)
 
@@ -428,9 +429,9 @@ Run (`F9` key)
 > Imagine we take those Pokemons with us:
 
 * Go to debugger (`F9`)
-* Load (`ctrl-l`) the `14' - Boostraped clean.sna` state
-* In the memory view, go to `D163` (click it, then `ctrl-g` and enter `1:D163`)
-* In the code view, go to `D163` (click it, then `ctrl-g` and enter `1:D163`)
+* Load (`Ctrl-L`) the `14' - Boostraped clean.sna` state
+* In the memory view, go to `D163` (click it, then `Ctrl-G` and enter `1:D163`)
+* In the code view, go to `D163` (click it, then `Ctrl-G` and enter `1:D163`)
 * Scroll the code view until the breakpoint is the first line
 * Run (`F9`) again
 
@@ -502,7 +503,7 @@ I strongly advise you to save the video locally for presentation.
 
 Function       | Key
 ---------------|-------
-Load state     | Ctrl-l
+Load state     | Ctrl-L
 Debugger       | Esc
 Run            | F9
 Step           | F3
