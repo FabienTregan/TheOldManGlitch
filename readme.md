@@ -56,13 +56,13 @@
 
 ### Run BGB and Pokémon Red
 
-* Start GBG, load the initial state provided in the `00 - Title.sna` file (`Ctrl-L`).
+* Start BGB, load the initial state provided in the `00 - Title.sna` file (`Ctrl-L`).
 * Bgb should either load the `Pokemon Red.gb` ROM file or ask you where it is (else try loading it usingby pressing `F12` key).
 
 ### Initial configuration of the screen
 
-* Stretch the screen window of GBG so it takes the full height of the screen and have a 1:1 aspect ratio (already done if youuse provided `gbg.ini` file)
-* Move this window to the right side of the screen (already done if youuse provided `gbg.ini` file)
+* Stretch the screen window of BGB so it takes the full height of the screen and have a 1:1 aspect ratio (already done if youuse provided `bgb.ini` file)
+* Move this window to the right side of the screen (already done if youuse provided `bgb.ini` file)
 * Open the debugger (`Esc` key)
 * Move it to the left side
 * Stretch it so it takes full height and the memory view (bottom of the windows) show the hex values but not the text values
@@ -164,7 +164,7 @@ Note: you can use EpicPen to highlight the tables.
 
 > The first one is default case, the second one is for Water Pokémons. The first number is the probability of encountering a Wild Pokémon (`00` meaning no encounter because we are safe when in town, and `05` meaning 5 chances out of 256 when on Water). Then we have a list of Pokémons that can be encountered going like this: Level of the most probable encounter, followed by type of the Pokémon of the most probable encounter, Level of a bit less probable encounter, and its type, again and again until the ninth one (with 1.2% encounter probability).
 >
-> Looking at the code, we see at address `789E` that we load the address `C45D` into `ld` register,
+> Looking at the code, we see at address `789E` that we load the address `C45D` into `lh` register,
 
 Note : It should be highlited in pale pink.
 
