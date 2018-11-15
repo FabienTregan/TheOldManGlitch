@@ -9,9 +9,19 @@
 
   Appendix A can be printed or kept accessible as a cheatsheet with address and shortcut during presentation.
 
+## Aknowledgement
+
+Thanks to
+* [Glitch City Laboratory forums](https://forums.glitchcity.info/index.php?topic=8534.msg211327) for sharing all that knowledge and beauty about glitches. And specially to ZZAZZ for [this post](https://forums.glitchcity.info/index.php?topic=6638.0)
+* Contributors of the [pret github repository](https://github.com/pret/pokered) for the disassembling, commenting and sharing Pokemon Red (and others) ROM.
+* WapiFlapi for helping choose the proper terms for different involved principles
+* ISSOtm and Sherkel (GBDev discord and Glitch City Laboratories forums) for proofreading and pertinent advices
+* Organizers of Toulouse Java User Group and Toulouse DevFest for undertanding this talk (and a weird previous one) was not out of topic
+* Attendees, for their time and feedback
+
 ## Setting up everything
 
-  This chapter guide you through setting everything to reproduce the demonstration.
+  This chapter guides you through setting everything to reproduce the demonstration.
   If you just want the writeup, skip to next chapter.
 
 ### Resolution
@@ -110,7 +120,7 @@ Your screen should now look like this (except the `Breakpoints` windows which sh
 
 ## Introduction
 
-> First lets start with a few question :
+> First let's start with a few question :
 > * Who here does love Assembly Language ?
 > * Who here writes Assembly ?
 > * Who here loves bugs ?
@@ -158,7 +168,7 @@ Wait for an attack, which hopefully will be a Level 3 RATTATA, press a key to op
 
 ### The off-by-one error
 
-> To understand why this bug is so famous, lets have a look at what happens inside the code. There are two arrays that help determinating which Wild Pokémon you will encounter: One is here at address `D887`, starting with this `00`, the other one is a little further, starting with this `05` at `D8A4`.
+> To understand why this bug is so famous, let's have a look at what happens inside the code. There are two arrays that help determinating which Wild Pokémon you will encounter: One is here at address `D887`, starting with this `00`, the other one is a little further, starting with this `05` at `D8A4`.
 
 Note: you can use EpicPen to highlight the tables.
 
@@ -216,7 +226,7 @@ Move one step south.
 
 ### Encounter Old Man
 
-> This happens early in the game, in the second town you enter. Lets fly here.
+> This happens early in the game, in the second town you enter. Let's fly here.
 
 Use the Fly move on Dux to fly to VIRIDIAN CITY.
 
@@ -302,7 +312,7 @@ Scroll down:
 
 ## 255 X SPECIALs
 
-> I can toss items. So lets toss two X SPECIALs.
+> I can toss items. So let's toss two X SPECIALs.
 
 do it 
 
@@ -312,7 +322,7 @@ show it
 
 ## 0 items but 255 XSpecial anyway
 
-> Now, lets have a look at how the items are represented in memory
+> Now, let's have a look at how the items are represented in memory
 
 Delete all the highlighting made with EpicPen. In the memory view of the debugger, go to address `WRA1:D31E`
 
@@ -368,7 +378,7 @@ Fly to CELADON CITY (center of map) and walk East a few steps to reach this posi
 
 ![Place to go in CELADON CITY](Proper%20place%20in%20CELADON%20CITY.PNG "Go there.")
 
-> When I am in this place, all the data in memory are ok and none makes the game hang when I display the item list. Lets have a look at the 35th item.
+> When I am in this place, all the data in memory are ok and none makes the game hang when I display the item list. Let's have a look at the 35th item.
 
 Go down 34 times in item list, until you reach GOLD NUGGET X1. Leave the menu and come back to clean display.
 
