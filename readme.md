@@ -272,7 +272,7 @@ Try to run away, or let your Pokémon die,  and go in town.
 
 ## 03 129 X SPECIALs
 
-> Once we have reached some random data like we did, we can hope to corrupt more things. As an example here, it might have been the case that, when trying to decompress the picture of the glitched Pokémon, the code writes interesting values at interesting places. Unfortunately this is not the case.
+> Once we have reached some random data like we did, we look for funny side effects. Decompressing what the code thinks is the data for the picture of the glitched Pokémon leads not only to a weird picture, but also to overwritting part of the SRAM - messing up with the Hall Of Fame. But there is something more interesting, which is more fun because it leads to more escalation.
 >
 > In Pokémon we have the Pokédex, which is a list of all the Pokémons types we encountered or captured.
  
@@ -282,7 +282,7 @@ Try to run away, or let your Pokémon die,  and go in town.
 
   Scroll down the whole list
 
-> We can't find it. This it because in memory, it is not a variable length list where things can be added, it is a fixed size memory area. We calculate the address of the byte coresponding to a given Pokémon Type number, and toggle a bit to indicate that we encountered it. And when we do this calculation with an invalid number (`00` or `86`) we reach some random place in memory which is outside of the Pokédex area.
+> We can't find it. This it because in memory, it is not a variable length list where things can be added, it is a fixed size memory area. We calculate the address of the byte corresponding to a given Pokémon Type number, and toggle a bit to indicate that we encountered it. And when we do this calculation with an invalid number (`00` or `86`) we reach some random place in memory which is outside of the Pokédex area.
 >
 > In fact it is not random, it is fixed. And where is it? It is just after the Pokédex area in memory, it is...
 
@@ -296,9 +296,9 @@ Scroll down:
 
 > This character here is the third tile after the `9` tile, so it is a (9 + 3 =) 12, and this is a 9. 12 * 10 + 9 = 129. We hade one X SPECIAL (`b00000001` in binary). The heighth bit has been toggled, we now have `b10000001`, which is 129.
 >
-> So we hade an off-by-one error, leading to a Reuse After Free. We could craft our name to inject invalid values in the reused value, and now we have a buffer overflow, allowing us to multiply our sixth Item ! At least something usefull :) But there is more.
+> So we hade an off-by-one error, leading to a Reuse After Free. We could craft our name to inject invalid values in the reused data, and now we have a buffer overflow allowing us to multiply our sixth Item ! At least something usefull :) We won!
 >
-> You see that the game does not know how to display 129 quantity. This is because in Pokémon you are limited to stacking 99 items. Lets play with that.
+> Ok, we won but... You see that the game does not know how to display 129 quantity. This is because in Pokémon you are limited to stacking 99 items. Maybe there is something to do with that.
 
 ## 255 X SPECIALs
 
@@ -306,13 +306,13 @@ Scroll down:
 
 do it 
 
-> We now have 127 X SPECIALs, which is `b01111111`. So we can encounter the glitched Pokémon again, switch the heighth bit again, and have `b11111111`, which is 255.
+> We now have 127 X SPECIALs, which is `b01111111`. So we can encounter the glitched Pokémon again, switch the heighth bit again, and have `b11111111`, which is 255. You don't have to be a security researcher to do that: you can have free X SPECIALs, you want to get the maximum amount of free X SPECIALs.
 
 show it
 
 ## 0 items but 255 XSpecial anyway
 
-> Lets have a look at how the items are represented in memory
+> Now, lets have a look at how the items are represented in memory
 
 Delete all the highlighting made with EpicPen. In the memory view of the debugger, go to address `WRA1:D31E`
 
