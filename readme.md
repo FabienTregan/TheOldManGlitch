@@ -121,10 +121,10 @@ Your screen should now look like this (except the `Breakpoints` windows which sh
 ## Introduction
 
 > First let's start with a few question :
-> * Who here does love Assembly Language ?
-> * Who here writes Assembly ?
-> * Who here loves bugs ?
-> * Who here writes bugs ?
+> * Who here do love Assembly Language ?
+> * Who here write Assembly ?
+> * Who here love bugs ?
+> * Who here write bugs ?
 
 ## 00 - Title
 
@@ -136,7 +136,7 @@ Your screen should now look like this (except the `Breakpoints` windows which sh
 
 Quit the menu 
 
-> Pokémon is an RPG game which came out in 1994, 1996 in Europe. You can move around in the world.
+> Pokémon is an RPG game which came out in 1996 in japan, 1998 in Europe. You can move around in the world.
 
 move around while saying this, stop next to the East shore facing east and re-open the menu.
 
@@ -144,7 +144,7 @@ move around while saying this, stop next to the East shore facing east and re-op
 
 Show while saying
 
-> Here I am safe because I am in a town, but outside of towns if I walk in Long Grass, in Caves or if I surf in Water I can be attacked by Wild Pokémons. I can fight them and try to capture them. Once I've captured them I can use them to fight other Wild Pokémons or against NPC's Pokémons to go further in the game. The Pokémons can level up, and when they have leveled up enough they can learn new attacks. Once I've made enough progress in the game, I can use some of these attacks to do other things than fighting. Here as an example I can use my GYARADOS' SURF attack to go in Water.
+> Here I am safe because I am in a town, but outside of towns if I walk in Long Grass, in Caves or if I surf in Water I can be attacked by Wild Pokémons. I can fight them using the pokemon I own and try to capture them. Once I've captured them I can use them to fight other Wild Pokémons or against NPC's Pokémons to go further in the game. While fighting, the Pokémons can gain experience, level up, and when learn new attacks. Once I've made enough progress in the game, I can use some of these attacks to do other things than fighting. Here as an example I can use my GYARADOS' SURF attack to go in Water.
 
 do it, move at least one tile east so you are no longer on the shore.
 
